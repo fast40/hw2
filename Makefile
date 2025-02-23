@@ -3,7 +3,7 @@ CXXFLAGS=-g -Wall -std=c++11
 # Uncomment for parser DEBUG
 #DEFS=-DDEBUG
 
-OBJS=amazon.o user.o db_parser.o product.o product_parser.o util.o
+OBJS=amazon.o user.o db_parser.o product.o product_parser.o util.o mydatastore.o book.o movie.o clothing.o
 
 all: amazon
 
@@ -23,8 +23,26 @@ product_parser.o: product_parser.cpp product_parser.h product.h
 util.o: util.cpp util.h
 	$(CXX) $(CXXFLAGS) $(DEFS) -o $@ -c util.cpp
 mydatastore.o: mydatastore.cpp mydatastore.h
-	$(CXX) $(CXXFLAGS) $(DEFS) -o $@ -c mydatastore.cpp
+	$(CXX) $(CXXFLAGS) $(DEFS) -o $@ -c $<
+book.o: book.cpp book.h
+	$(CXX) $(CXXFLAGS) $(DEFS) -o $@ -c $<
+movie.o: movie.cpp movie.h
+	$(CXX) $(CXXFLAGS) $(DEFS) -o $@ -c $<
+clothing.o: clothing.cpp clothing.h
+	$(CXX) $(CXXFLAGS) $(DEFS) -o $@ -c $<
 
 
 clean:
 	rm -f *.o amazon
+
+# amazon.cpp
+# book.cpp
+# clothing.cpp
+# db_parser.cpp
+# movie.cpp
+# mydatastore.cpp
+# product.cpp
+# product_parser.cpp
+# test.cpp
+# user.cpp
+# util.cpp
