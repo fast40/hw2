@@ -19,16 +19,26 @@ std::set<std::string> parseStringToWords(string rawWords)
         std::set<std::string> words;
         int wordStartIndex = 0;
 
-        for (int i = 0; i < rawWords.length(); i++) {
-                if (separators.find(rawWords[i]) == std::string::npos) continue;
+        int i = 0;
+
+        // std::cout << "rawWords: " << rawWords << std::endl;
+
+        for (; i < rawWords.length(); i++) {
+                if (separators.find(rawWords[i]) == std::string::npos) {  // if cannot find this character in separators
+                        continue;
+                }
 
                 if (i - wordStartIndex < 2) {
-                        wordStartIndex = i;
-                }
-                else {
-                        words.emplace(rawWords.substr(wordStartIndex, wordStartIndex + i));
                         wordStartIndex = i + 1;
                 }
+                else {
+                        words.emplace(convToLower(rawWords.substr(wordStartIndex, i - wordStartIndex)));
+                        wordStartIndex = i + 1;
+                }
+        }
+
+        if (i - wordStartIndex > 1) {
+                words.emplace(convToLower(rawWords.substr(wordStartIndex)));
         }
 
         return words;

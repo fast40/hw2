@@ -1,4 +1,5 @@
 #include <set>
+#include <stdexcept>
 #include "mydatastore.h"
 #include "util.h"
 
@@ -47,8 +48,85 @@ void MyDataStore::addUser(User* u) {
 }
 
 void MyDataStore::dump(std::ostream& ofile) {
+        ofile << "<products>" << std::endl;
+
         for (auto product : products_) {
                 product->dump(ofile);
         }
+
+        ofile <<"</products>" << std::endl;
+
+        ofile << "<users>" << std::endl;
+
+        for (auto user : users_) {
+                user->dump(ofile);
+        }
+
+        ofile << "</users>";
 }
 
+void MyDataStore::addToCart(std::string username, Product* p) {
+        username = convToLower(username);
+
+        for (auto user : users_) {
+                if (convToLower(user->getName()) == username) {
+                        cart_[user].push_back(p);
+                        return;
+                }
+        }
+
+        throw std::invalid_argument("Invalid username");
+}
+
+void MyDataStore::printCart(std::string username) {
+        for (auto user : users_) {
+                if (convToLower(user->getName()) == username) {
+                        int item_number = 1;
+                        for (auto item : cart_[user]) {
+                                std::cout << "Item " << item_number++ << std::endl;
+                                std::cout << item->displayString() << std::endl;
+                        }
+                        // for (int i = 0; i < cart_[user].size(); i++) {
+                        //         std::cout << "Item " << i + 1 << std::endl;
+                        //         std::cout << cart_[user][i]->displayString() << std::endl;
+                        // }
+
+                        return;
+                }
+        }
+
+        throw std::invalid_argument("Invalid username");
+}
+
+void MyDataStore::buyCart(std::string username) {
+        for (auto user : users_) {
+                if (convToLower(user->getName()) == username) {
+                        auto it = cart_[user].begin();
+
+                        while (it != cart_[user].end()) {
+                                if ((*it)->getQty() > 0 && user->getBalance() >= (*it)->getPrice()) {
+                                        (*it)->subtractQty(1);
+                                        user->deductAmount((*it)->getPrice());
+                                        it = cart_[user].erase(it);
+                                }
+                                else {
+                                        it++;
+                                }
+                        }
+
+                        return;
+                }
+        }
+
+        throw std::invalid_argument("Invalid username");
+}
+
+MyDataStore::~MyDataStore() {
+        for (auto product : products_) {
+                delete product;
+        }
+
+        for (auto user : users_) {
+                delete user;
+        }
+}

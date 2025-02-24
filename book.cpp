@@ -5,7 +5,7 @@
 Book::Book(const std::string name, double price, int qty, std::string isbn, std::string author) : Product("book", name, price, qty), isbn_(isbn),  author_(author) {}
 
 std::set<std::string> Book::keywords() const {
-        std::set<std::string> result = parseStringToWords(name_ + author_);
+        std::set<std::string> result = parseStringToWords(name_ + " " + author_);
         result.insert(isbn_);
 
         return result;
@@ -15,8 +15,9 @@ std::string Book::displayString() const {
         std::string result; 
 
         result += name_ + "\n";
-        result += "Author: " + author_ + "ISBN: " + isbn_ + "\n";
-        result += std::to_string(price_) + std::to_string(qty_) + "left.\n";  // probably have to deal with the price being a ton of digits
+        result += "Author: " + author_ + " ISBN: " + isbn_ + "\n";
+        result += std::to_string(int(price_) ) + "." + std::to_string(int(price_ * 100) % 100) + " ";
+        result += std::to_string(qty_) + " left.\n";
 
         return result;
 }
