@@ -36,7 +36,7 @@ std::vector<Product*> MyDataStore::search(std::vector<std::string>& terms, int t
 
         std::set<Product*> result = match_sets[0];
 
-        for (int i = 1; i < match_sets.size(); ++i) {
+        for (std::size_t i = 1; i < match_sets.size(); ++i) {
                 result = set_function(result, match_sets[i]);
         }
 
@@ -86,10 +86,6 @@ void MyDataStore::printCart(std::string username) {
                                 std::cout << "Item " << item_number++ << std::endl;
                                 std::cout << item->displayString() << std::endl;
                         }
-                        // for (int i = 0; i < cart_[user].size(); i++) {
-                        //         std::cout << "Item " << i + 1 << std::endl;
-                        //         std::cout << cart_[user][i]->displayString() << std::endl;
-                        // }
 
                         return;
                 }

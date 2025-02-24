@@ -19,7 +19,7 @@ std::set<std::string> parseStringToWords(string rawWords)
         std::set<std::string> words;
         int wordStartIndex = 0;
 
-        int i = 0;
+        std::size_t i = 0;
 
         // std::cout << "rawWords: " << rawWords << std::endl;
 
