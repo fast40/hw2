@@ -8,11 +8,8 @@ void MyDataStore::addProduct(Product* p) {
         products_.insert(p);
 
         for (const std::string& keyword : p->keywords()) {
-                std::set<Product*> matches = keyword_search_map_[keyword];
-
-                if (std::find(matches.begin(), matches.end(), p) == matches.end()) {
-                        keyword_search_map_[keyword].insert(p);
-                }
+                std::set<Product*>& matches = keyword_search_map_[keyword];
+                matches.insert(p);
         }
 }
 
